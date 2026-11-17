@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+header {
+  display: flex;
+}
+.logo {
+  display: flex;
+}
+.foto img {
+  width: 150px;
+  height: 150px;
+}
+.nazvanie h1 {
+  font-size: 40px;
+  margin-left: 10px;
+  margin-top: 50px;
+}
+.menu {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-left: 600px;
+  cursor: pointer;
+}
+.menu a{
+    text-decoration: none;
+    color: black;
+}
+.menu h1:hover {
+  color: rgb(234, 183, 16);
+}
+.knopki {
+  display: flex;
+  gap: 15px;
+  margin-left: 400px;
+  margin-top: 40px;
+}
+
+.knopki button {
+  width: 150px;
+  height: 70px;
+  background-color: rgb(237, 172, 8);
+  color: white;
+  font-size: 15px;
+  align-items: center;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  border: 2px solid black;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.knopki button:hover {
+  background-color: rgb(7, 150, 12);
+  color: white;
+}
+
+.banner {
+  width: 100%;
+  height: 600px;
+  background:
+    linear-gradient(rgba(135, 76, 4, 0.4), rgba(9, 140, 201, 0.4)),
+    url("images/iker-urteaga-TL5Vy1IM-uA-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+}
+.Pochemu {
+  max-width: 600px;
+  text-align: center;
+  padding: 20px;
+  font-size: 20px;
+  margin-left: 650px;
+}
+.kategory {
+  width: 100%;
+  height: 1200px;
+  background-color: rgb(207, 130, 23);
+   display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.kat {
+  width: 300px;
+  height: 450px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+.suret img {
+  width: 100%;
+  height: 200px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.knopka1 {
+  margin-top: auto;
+  padding-bottom: 10px; 
+}
+.knopka1 button {
+  width: 100px;
+  height: 50px;
+  background-color: rgb(0, 136, 111);
+  color: white;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  border-radius: 6px;
+  border: 2px solid rgb(0, 0, 0);
+  font-size: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.knopka1 button:hover{
+    width: 150px;
+  height: 50px;
+  background-color: rgb(0, 127, 136);
+  color: white;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  border-radius: 6px;
+  border: 2px solid rgb(0, 0, 0);
+  font-size: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+
+footer{
+  width: 100%;
+  height: 300px;
+  background-color: rgb(52, 31, 3);
+  color: white;
+  display: flex;
+}
+.nazvanie1 h1 {
+  font-size: 40px;
+  margin-left: 10px;
+  margin-top: 50px;
+  color: white;
+}
+.contact-zaga{
+  font-size: 20px;
+  margin-left: 300px;
+  margin-top: 100px;
+}
+.email,.hour{
+  font-size: 20px;
+  margin-left: 30px;
+  max-width: 600px;
+  text-align: center;
+}
+.soc_seti{
+  display: flex;
+  margin-left: 1000px;
+  font-size: 10px;
+  gap: 15px;
+  text-align: center;
+}
+.soc  img{
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+.soc img:hover{
+   width: 70px;
+  height: 70px;
+  cursor: pointer;
+}
+.soc h1{
+  font-size: 20px;
+  cursor: pointer;
+}
+.soc h1:hover{
+  font-size: 30px;
+  cursor: pointer;
+}

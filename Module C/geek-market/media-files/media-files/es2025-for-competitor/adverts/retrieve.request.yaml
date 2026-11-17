@@ -1,0 +1,24 @@
+$kind: http-request
+url: "{{host}}/api/adverts?sort=desc&sort_by=date&page=1&per_page=10&category_id=1&price_from=900&price_to=1100"
+method: GET
+queryParams:
+  sort: desc
+  sort_by: date
+  page: "1"
+  per_page: "10"
+  category_id: "1"
+  price_from: "900"
+  price_to: "1100"
+body:
+  type: json
+  content: "{\r
+
+    \    \"phone\": \"+77777777779\",\r
+
+    \    \"email\": \"agybay@gmai9.com\",\r
+
+    \    \"password\": \"agybay123\"\r
+
+    }"
+settings: {}
+order: 1000

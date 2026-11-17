@@ -1,0 +1,933 @@
+openapi: 3.0.3
+
+info:
+  title: Geek Marketplace API
+  version: 1.0.0
+  description: REST API for the Geek Marketplace classifieds platform.
+  license:
+    name: Not specified
+
+servers:
+  - url: http://127.0.0.1:8000/api
+
+tags:
+  - name: Auth
+  - name: User
+  - name: Categories
+  - name: Adverts
+  - name: Advantage Services
+
+paths:
+
+  # AUTHENTICATION
+
+  /register:
+    post:
+      summary: Register a new user
+      operationId: register
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /login:
+    post:
+      summary: Log in using email or phone
+      operationId: login
+      tags:
+        - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /logout:
+    post:
+      summary: Log out current user
+      operationId: logout
+      tags:
+        - Auth
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Logged out successfully
+        '401':
+          description: Unauthorized
+
+  # USER
+
+  /user:
+    get:
+      summary: Get current user profile
+      operationId: getCurrentUser
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+
+    patch:
+      summary: Update current user profile
+      operationId: updateUser
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserActionResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /user/adverts:
+    get:
+      summary: Get current user's advertisements
+      operationId: getUserAdverts
+      tags:
+        - User
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - draft
+              - moderation
+              - declined
+              - published
+              - archived
+          description: Filter advertisements by status
+      responses:
+        '200':
+          description: User advertisements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Advert'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Invalid status
+
+  # CATEGORIES
+
+  /categories:
+    get:
+      summary: Get all categories
+      operationId: getCategories
+      tags:
+        - Categories
+      security: []
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '400':
+          description: Bad request
+
+  # ADVERTISEMENTS
+
+  /adverts:
+    get:
+      summary: Get published advertisements
+      operationId: getAdverts
+      tags:
+        - Adverts
+      security: []
+      description: |
+        Returns published advertisements with pagination.
+
+        TOP advertisements appear first and must satisfy all filters.
+        VIP advertisements occupy up to three random positions after TOP.
+        VIP advertisements ignore text search and allow a price deviation
+        of less than 100. Regular advertisements follow the promoted ones.
+      parameters:
+        - in: query
+          name: category_id
+          schema:
+            type: string
+          description: Filter by category ID, such as C1 or C2
+
+        - in: query
+          name: price_from
+          schema:
+            type: number
+            minimum: 0
+          description: Minimum price
+
+        - in: query
+          name: price_to
+          schema:
+            type: number
+            minimum: 0
+          description: Maximum price
+
+        - in: query
+          name: query
+          schema:
+            type: string
+            maxLength: 255
+          description: Search by title, text, category name or author's name
+
+        - in: query
+          name: sort_by
+          schema:
+            type: string
+            enum:
+              - date
+              - price
+          description: Sorting field
+
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+          description: Sort direction
+
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+
+        - in: query
+          name: per_page
+          schema:
+            type: integer
+            enum:
+              - 10
+              - 20
+              - 30
+            default: 10
+          description: Number of results per page
+
+      responses:
+        '200':
+          description: Paginated advertisements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertPaginationResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+    post:
+      summary: Create a new advertisement
+      operationId: createAdvert
+      tags:
+        - Adverts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdvertCreateRequest'
+      responses:
+        '201':
+          description: Advertisement created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertActionResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+
+  /adverts/{id}:
+    get:
+      summary: Get advertisement details
+      operationId: getAdvert
+      tags:
+        - Adverts
+      security: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Advertisement ID
+      responses:
+        '200':
+          description: Advertisement found successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertActionResponse'
+        '404':
+          description: Advertisement not found
+
+    patch:
+      summary: Update an advertisement
+      operationId: updateAdvert
+      tags:
+        - Adverts
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdvertUpdateRequest'
+      responses:
+        '200':
+          description: Advertisement updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertActionResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Advertisement not found
+        '422':
+          description: Validation error
+
+    delete:
+      summary: Delete an advertisement in draft or archived status
+      operationId: deleteAdvert
+      tags:
+        - Adverts
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Advertisement deleted successfully
+        '401':
+          description: Unauthorized
+        '403':
+          description: Only the owner can delete an advertisement
+        '404':
+          description: Advertisement not found
+
+  /adverts/{id}/update-status:
+    post:
+      summary: Update advertisement status
+      operationId: updateAdvertStatus
+      tags:
+        - Adverts
+      security:
+        - bearerAuth: []
+      description: |
+        Users and moderators can change advertisement statuses
+        according to the allowed transition rules.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: Advertisement ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdvertUpdateStatusRequest'
+      responses:
+        '200':
+          description: Advertisement status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvertActionResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Status transition is not allowed
+        '404':
+          description: Advertisement not found
+        '422':
+          description: Validation error
+
+  # ADVANTAGE SERVICES - TOP AND VIP
+
+  /adverts/{advertId}/services:
+    get:
+      summary: Get paid services for an advertisement
+      operationId: getAdvertPaidServices
+      tags:
+        - Advantage Services
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: advertId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Services retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaidServicesResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Only the owner can view services
+        '404':
+          description: Advertisement not found
+
+    post:
+      summary: Activate TOP or VIP service
+      operationId: activateAdvertPaidService
+      tags:
+        - Advantage Services
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: advertId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivatePaidServiceRequest'
+      responses:
+        '201':
+          description: Service activated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaidServiceActionResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Only the owner can activate a service
+        '404':
+          description: Advertisement not found
+        '422':
+          description: Validation error or service already active
+
+  /adverts/{advertId}/services/{serviceId}/extend:
+    post:
+      summary: Extend an active paid service
+      operationId: extendAdvertPaidService
+      tags:
+        - Advantage Services
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: advertId
+          required: true
+          schema:
+            type: integer
+
+        - in: path
+          name: serviceId
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: Service extended successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaidServiceActionResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Only the owner can extend a service
+        '404':
+          description: Advertisement or service not found
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Bearer
+
+  schemas:
+
+    RegisterRequest:
+      type: object
+      required:
+        - phone
+        - email
+        - password
+      properties:
+        phone:
+          type: string
+          example: "+1 202 555 0143"
+        email:
+          type: string
+          format: email
+          example: "ethan@ws-s17.kz"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 50
+
+    LoginRequest:
+      type: object
+      required:
+        - login
+        - password
+      properties:
+        login:
+          type: string
+          description: Email address or phone number
+          example: "ethan@ws-s17.kz"
+        password:
+          type: string
+          format: password
+
+    AuthResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Login successful
+        user:
+          $ref: '#/components/schemas/User'
+        access_token:
+          type: string
+          description: Laravel Sanctum access token
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        email_verified_at:
+          type: string
+          format: date-time
+          nullable: true
+        role:
+          type: string
+          enum:
+            - user
+            - moderator
+        is_blocked:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 100
+        phone:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 255
+
+    UserActionResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          example: C1
+        name:
+          type: string
+          maxLength: 100
+          example: Real Estate
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Advert:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          maxLength: 200
+        text:
+          type: string
+          maxLength: 1000
+        status:
+          type: string
+          enum:
+            - draft
+            - moderation
+            - declined
+            - published
+            - archived
+        price:
+          type: string
+          example: "150.00"
+        photos:
+          type: array
+          nullable: true
+          items:
+            type: string
+        views_count:
+          type: integer
+        category_id:
+          type: string
+          example: C1
+        user_id:
+          type: integer
+        user:
+          $ref: '#/components/schemas/User'
+        category:
+          $ref: '#/components/schemas/Category'
+        paid_services:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaidService'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    AdvertCreateRequest:
+      type: object
+      required:
+        - title
+        - text
+        - price
+        - category_id
+        - photos
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        text:
+          type: string
+          maxLength: 1000
+        price:
+          type: number
+          minimum: 0
+        category_id:
+          type: string
+          example: C1
+        photos:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: Array of photo URLs or image paths
+
+    AdvertUpdateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        text:
+          type: string
+          maxLength: 1000
+        price:
+          type: number
+          minimum: 0
+        category_id:
+          type: string
+          example: C1
+
+    AdvertUpdateStatusRequest:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - draft
+            - moderation
+            - declined
+            - published
+            - archived
+          example: published
+
+    AdvertActionResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        advert:
+          $ref: '#/components/schemas/Advert'
+
+    AdvertPaginationResponse:
+      type: object
+      properties:
+        current_page:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Advert'
+        first_page_url:
+          type: string
+          nullable: true
+        from:
+          type: integer
+          nullable: true
+        last_page:
+          type: integer
+        last_page_url:
+          type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaginationLink'
+        next_page_url:
+          type: string
+          nullable: true
+        path:
+          type: string
+        per_page:
+          type: integer
+        prev_page_url:
+          type: string
+          nullable: true
+        to:
+          type: integer
+          nullable: true
+        total:
+          type: integer
+
+    PaginationLink:
+      type: object
+      properties:
+        url:
+          type: string
+          nullable: true
+        label:
+          type: string
+        page:
+          type: integer
+          nullable: true
+        active:
+          type: boolean
+
+    ActivatePaidServiceRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - VIP
+            - TOP
+          example: VIP
+
+    PaidService:
+      type: object
+      properties:
+        id:
+          type: integer
+        advert_id:
+          type: integer
+        type:
+          type: string
+          description: Paid service type
+          example: VIP
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        deactivated_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    PaidServiceActionResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        service:
+          $ref: '#/components/schemas/PaidService'
+
+    PaidServicesResponse:
+      type: object
+      properties:
+        advert_id:
+          type: integer
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaidService'
+
+    ValidationErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+
+    UnauthorizedErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+    ForbiddenErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+    NotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string

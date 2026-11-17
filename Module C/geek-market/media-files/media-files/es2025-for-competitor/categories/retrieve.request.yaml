@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/categories"
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"phone\": \"+77777777779\",\r
+
+    \    \"email\": \"agybay@gmai9.com\",\r
+
+    \    \"password\": \"agybay123\"\r
+
+    }"
+settings: {}
+order: 1000

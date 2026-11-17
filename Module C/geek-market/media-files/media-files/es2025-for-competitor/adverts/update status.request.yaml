@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{host}}/api/adverts/3/update-status"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Advert 2\",\r
+
+    \    \"text\": \"asdfasdfasdf\",\r
+
+    \    \"price\": 1000,\r
+
+    \    \"category_id\": 1,\r
+
+    \    \"status\": \"declined\"\r
+
+    }"
+order: 5000

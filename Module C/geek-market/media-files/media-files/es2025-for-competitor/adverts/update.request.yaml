@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{host}}/api/adverts/1"
+method: PATCH
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Advert 2\",\r
+
+    \    \"text\": \"asdfasdfasdf\",\r
+
+    \    \"price\": 1000,\r
+
+    \    \"category_id\": 1\r
+
+    }"
+order: 3000

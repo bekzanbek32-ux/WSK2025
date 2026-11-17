@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{host}}/api/adverts"
+method: POST
+body:
+  type: formdata
+  content:
+    - type: file
+      key: photos[]
+      src: /C:/Users/agyba/Desktop/euroskills2025/denmark/module-a/media-files/sponsors/nova-power.png
+    - type: text
+      key: title
+      value: Advert 1
+    - type: text
+      key: text
+      value: asdf
+    - type: text
+      key: price
+      value: "100"
+    - type: text
+      key: category_id
+      value: "1"
+order: 6000

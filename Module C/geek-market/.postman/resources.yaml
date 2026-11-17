@@ -1,0 +1,14 @@
+# Use this workspace to collaborate
+workspace:
+  id: 1b67305e-f8eb-4655-85c2-b89bfd465fe8
+
+localResources:
+  collections:
+    - ../media-files/media-files/es2025-for-competitor
+  specs:
+    - ../media-files/media-files/swagger/openapi.yaml
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections: {}

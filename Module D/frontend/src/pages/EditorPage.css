@@ -1,0 +1,249 @@
+/* ==========================================================================
+   Advert editor
+   ========================================================================== */
+
+.editor-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 26px;
+}
+
+.editor-head h1 {
+  margin: 10px 0 8px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.035em;
+}
+
+.editor-head p {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 0.87rem;
+  line-height: 1.65;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 336px;
+  align-items: start;
+  gap: 26px;
+}
+
+.editor-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.editor-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.editor-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-soft);
+}
+
+.editor-card__step {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.editor-card__head h2 {
+  font-size: 1rem;
+}
+
+.editor-card__head p {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.editor-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
+
+.editor-actions__right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  justify-content: flex-end;
+}
+
+.editor-aside {
+  position: sticky;
+  top: calc(var(--header-height) + 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.editor-preview {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.editor-preview__label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.editor-preview__card {
+  pointer-events: none;
+}
+
+.editor-preview__card .advert-card:hover {
+  transform: none;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.editor-preview__card .advert-card__media {
+  height: 168px;
+}
+
+.editor-tips {
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, #fbfaff, #f3efff);
+}
+
+.editor-tips h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--primary-dark);
+}
+
+.editor-tips ul {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.editor-tips li {
+  position: relative;
+  padding-left: 16px;
+  color: var(--ink-2);
+  font-size: 0.77rem;
+  line-height: 1.55;
+}
+
+.editor-tips li::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.65;
+}
+
+.editor-error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: -36px;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 1040px) {
+  .editor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-aside {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .editor-head {
+    flex-direction: column;
+  }
+
+  .editor-aside {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .editor-actions > .btn {
+    width: 100%;
+  }
+
+  .editor-actions__right {
+    flex-direction: column;
+  }
+
+  .editor-actions__right .btn {
+    width: 100%;
+  }
+
+  .editor-error-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .editor-card__head,
+  .editor-card__body {
+    padding: 16px;
+  }
+
+  .editor-page {
+    padding-top: 18px;
+  }
+}

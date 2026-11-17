@@ -1,0 +1,57 @@
+/* Shared placeholder artwork for adverts without usable photos. */
+
+.media-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 100%;
+  color: var(--media-ink, #6b4be0);
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.85), transparent 42%),
+    linear-gradient(135deg, var(--media-a, #efeaff), var(--media-b, #d9ccff));
+}
+
+.media-placeholder__icon {
+  opacity: 0.8;
+}
+
+.media-placeholder__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.media-placeholder--1 {
+  --media-a: #efeaff;
+  --media-b: #d6c8ff;
+  --media-ink: #6b4be0;
+}
+
+.media-placeholder--2 {
+  --media-a: #e9f2ff;
+  --media-b: #c9e0ff;
+  --media-ink: #3f74c9;
+}
+
+.media-placeholder--3 {
+  --media-a: #eaf8f1;
+  --media-b: #c8ecdc;
+  --media-ink: #2d8f6d;
+}
+
+.media-placeholder--4 {
+  --media-a: #fff2e9;
+  --media-b: #ffdbc4;
+  --media-ink: #c66a36;
+}
+
+.media-placeholder--5 {
+  --media-a: #fdf0f5;
+  --media-b: #f4d2e1;
+  --media-ink: #bb5478;
+}

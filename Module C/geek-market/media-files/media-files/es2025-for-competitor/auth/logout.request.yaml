@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{host}}/api/auth/logout"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"login\": \"+77777777779\",\r
+
+    \    \"password\": \"agybay123\"\r
+
+    }"
+order: 3000

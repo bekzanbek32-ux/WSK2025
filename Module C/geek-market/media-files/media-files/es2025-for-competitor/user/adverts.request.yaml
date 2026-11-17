@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{host}}/api/user/adverts?status=draft"
+method: GET
+queryParams:
+  status: draft
+body:
+  type: json
+  content: "{\r
+
+    \    \"login\": \"+77777777779\",\r
+
+    \    \"password\": \"agybay123\"\r
+
+    }"
+settings: {}
+order: 3000
