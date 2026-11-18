@@ -1,0 +1,40 @@
+body {
+  background-color: black;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+}
+
+h1 {
+  color: white;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  position: relative;
+  top: 10px;
+  margin-bottom: 15px;
+}
+
+input {
+  width: 200px;
+  height: 5px;
+  background-color: blueviolet;
+  border: 2px solid blueviolet;
+  border-radius: 4px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+input:hover,
+input:focus {
+  height: 35px; 
+  background-color: #830cf3; 
+  color: white;
+  padding: 0 10px;
+}

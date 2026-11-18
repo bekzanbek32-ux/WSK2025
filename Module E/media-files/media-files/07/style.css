@@ -1,0 +1,82 @@
+body {
+    background-color: #1a1a1a;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.nav-container {
+    position: relative;
+    display: flex;
+    background-color: #ffffff;
+    padding: 6px;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.nav-item {
+    position: relative;
+    z-index: 3;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #000;
+}
+
+.indicator {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    width: 95px;
+    background-color: #e0e0e0;
+    border-radius: 30px;
+    /* Быстрый переход */
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.indicator-trail {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 6px;
+    width: 95px;
+    background-color: #d0d0d0; 
+    border-radius: 20px;
+    transition: transform 0.5s cubic-bezier(0.1, 1.2, 0.3, 1);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.nav-container .nav-item:nth-child(1):hover ~ .indicator,
+.nav-container .nav-item:nth-child(1):hover ~ .indicator-trail {
+    transform: translateX(0);
+}
+
+.nav-container .nav-item:nth-child(2):hover ~ .indicator,
+.nav-container .nav-item:nth-child(2):hover ~ .indicator-trail {
+    transform: translateX(100%);
+}
+
+.nav-container .nav-item:nth-child(3):hover ~ .indicator,
+.nav-container .nav-item:nth-child(3):hover ~ .indicator-trail {
+    transform: translateX(200%);
+}
+
+.nav-container .nav-item:nth-child(4):hover ~ .indicator,
+.nav-container .nav-item:nth-child(4):hover ~ .indicator-trail {
+    transform: translateX(300%);
+}
